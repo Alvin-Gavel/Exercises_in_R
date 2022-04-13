@@ -15,7 +15,6 @@ trials <- 10
 successes <- rbinom(trials, 1, true_p)
 so_far <- 0
 
-print(successes)
 for (i in 1:trials) {
    so_far <- so_far + successes[i]
    L <- dbinom(so_far, size=i, prob=p)
@@ -23,8 +22,7 @@ for (i in 1:trials) {
    unnorm_posterior <- L * prior
    posterior <- unnorm_posterior / sum(unnorm_posterior)
 
-   filepath <- paste0("binomial_experiment_plots/Plot_", i ,".jpg")
-   jpeg(file=filepath)
+   jpeg(file=paste0("binomial_experiment_plots/Plot_", i ,".jpg"))
    plot(p, posterior, type="l", xlab="p", ylab="P(p|data)")
    dev.off()
 }
