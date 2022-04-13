@@ -24,7 +24,6 @@ for (i in 1:trials) {
    posterior <- unnorm_posterior / sum(unnorm_posterior)
 
    filepath <- paste0("binomial_experiment_plots/Plot_", i ,".jpg")
-   print(filepath)
    jpeg(file=filepath)
    plot(p, posterior, type="l", xlab="p", ylab="P(p|data)")
    dev.off()
