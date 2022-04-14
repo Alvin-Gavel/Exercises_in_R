@@ -18,12 +18,20 @@ binomial_fit <- function(trials, successes) {
    dev.off()
 }
 
-# Fit each possible number of successes given the number of trials
+# Fit each possible number of successes given a number of trials
 binomial_fits_by_trials <- function(trials) {
    for (i in 0:trials) {
       binomial_fit(trials, i)
    }
 }
 
+# Fit each possible number of successes for a number of trials below a
+# maximum
+binomial_fits_below_trials <- function(max_trials) {
+   for (trials in 0:max_trials) {
+      binomial_fits_by_trials(trials)
+   }
+}
+
 trials <- 10
-binomial_fits_by_trials(trials)
+binomial_fits_below_trials(trials)
