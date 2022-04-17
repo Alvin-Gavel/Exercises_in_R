@@ -8,30 +8,36 @@
 n_steps <- 100
 binom_p <- seq(from=0, to=1, length.out=n_steps)
 
-# Fit a binomial distribution to the given number of trials and
-# successes and plot it, dropping the plot in a folder named
-# binomial_experiment_plots
-binomial_fit <- function(trials, successes) {
-   binom_L <- dbinom(successes, size = trials, prob = binom_p)
-   jpeg(file=paste0("binomial_experiment_plots/Binomial_fit_", trials, "_", successes, ".jpg"))
-   plot(binom_p, binom_L, type="l", xlab="p", ylab="P(p|data)", xlim = c(0,1))
+# Calculate p(P|n, k), given a prior p(P)
+binomial_update <- function(n, k, pP) {
+   L <- dbinom(k, size = n, prob = binom_p)
+   pPnk <- L * pP
+   return(pPnk)
+}
+
+# Calculate p(P|n, k), starting with a flat prior
+binomial_fit <- function (n, k) {
+   pP <- seq(from=1, to=1, length.out=n_steps)
+   pPnk <- binomial_update(n, k, pP)
+   return(pPnk)
+}
+
+# Plot p(P|n, k) and save the resulting figure
+plot_pP <- function(pPnk, file_path) {
+   jpeg(file=file_path)
+   plot(binom_p, pPnk, type="l", xlab="p", ylab="p(P|n, k)", xlim = c(0,1))
    dev.off()
 }
 
-# Fit each possible number of successes given a number of trials
-binomial_fits_by_trials <- function(trials) {
-   for (i in 0:trials) {
-      binomial_fit(trials, i)
+# Plot fits of p(P|n, k) with a flat prior, saving them in a given folder
+plot_all_pP_below_n <- function(n_max, folder_path) {
+   for (n in 0:n_max) {
+      for (k in 0:n) {
+         pPnk = binomial_fit(n, k)
+         plot_pP(pPnk, paste0(folder_path, "/binomial_fit_", n, "_", k))
+      }
    }
 }
 
-# Fit each possible number of successes for a number of trials below a
-# maximum
-binomial_fits_below_trials <- function(max_trials) {
-   for (trials in 0:max_trials) {
-      binomial_fits_by_trials(trials)
-   }
-}
-
-trials <- 10
-binomial_fits_below_trials(trials)
+n_max <- 10
+plot_all_pP_below_n(n_max, "binomial_experiment_plots")
