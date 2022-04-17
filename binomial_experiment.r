@@ -28,6 +28,7 @@ plot_pP <- function(pPnk, file_path, frame = TRUE) {
    if (frame) {
       plot(binom_p, pPnk, type="l", xlab="p", ylab="p(P|n, k)", xlim = c(0,1))
    } else {
+      par(mar=c(0,0,0,0))
       plot(binom_p, pPnk, type="l", axes=FALSE, xlab="", ylab="", bty="n", xlim = c(0,1))
    }
    dev.off()
