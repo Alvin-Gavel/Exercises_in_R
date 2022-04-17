@@ -23,9 +23,13 @@ binomial_fit <- function (n, k) {
 }
 
 # Plot p(P|n, k) and save the resulting figure
-plot_pP <- function(pPnk, file_path) {
-   jpeg(file=file_path)
-   plot(binom_p, pPnk, type="l", xlab="p", ylab="p(P|n, k)", xlim = c(0,1))
+plot_pP <- function(pPnk, file_path, frame = TRUE) {
+   png(file=file_path)
+   if (frame) {
+      plot(binom_p, pPnk, type="l", xlab="p", ylab="p(P|n, k)", xlim = c(0,1))
+   } else {
+      plot(binom_p, pPnk, type="l", axes=FALSE, xlab="", ylab="", bty="n", xlim = c(0,1))
+   }
    dev.off()
 }
 
@@ -34,7 +38,8 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
    for (n in 0:n_max) {
       for (k in 0:n) {
          pPnk = binomial_fit(n, k)
-         plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k))
+         plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k, "_no_frame", ".png"), FALSE)
+         plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k, ".png"), TRUE)
       }
    }
 }
