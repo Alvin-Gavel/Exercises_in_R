@@ -34,7 +34,7 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
    for (n in 0:n_max) {
       for (k in 0:n) {
          pPnk = binomial_fit(n, k)
-         plot_pP(pPnk, paste0(folder_path, "/binomial_fit_", n, "_", k))
+         plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k))
       }
    }
 }
