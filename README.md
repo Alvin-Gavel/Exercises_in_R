@@ -2,4 +2,4 @@ This repository contains code I have written as an exercise in learning to progr
 
 `README.md`: This text
 
-`binomial_experiment.r`: Plots the results of fitting a binomial function to observed data. The idea is that you should be able to see how the probability `p(P|n,k)` converges towards the true `P` as `n` increases.
+`binomial_experiment.r`: Plots the results of fitting a binomial function to observed data. The idea is that you should be able to see how the probability _p(P|n,k)_ converges towards the true _P_ as _n_ increases.
