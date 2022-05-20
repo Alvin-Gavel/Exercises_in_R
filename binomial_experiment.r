@@ -45,5 +45,3 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
    }
 }
 
-n_max <- 10
-plot_all_pP_below_n(n_max, "binomial_experiment_plots")
