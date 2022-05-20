@@ -48,7 +48,7 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
 
 # Make a gif containing the binomial fits as they are updated over n
 # binomial draws with a probability P of success
-gif_random_sequence <- function(n_max, P, folder_path) {
+gif_random_sequence <- function(n_max, P) {
    tosses <- runif(n_max)
    successes <- tosses < P
    saveGIF(
@@ -57,6 +57,6 @@ gif_random_sequence <- function(n_max, P, folder_path) {
       pPnk = binomial_fit(n, k)
       plot(binom_p, pPnk, type="l", xlab="P", ylab=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), lwd = 2)
    },
-   movie.name = paste0(folder_path, "/Updating_n_", n_max, "_P_", P, ".gif")
+   movie.name = paste0("Updating_n_", n_max, "_P_", P, ".gif")
    )
 }
