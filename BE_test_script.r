@@ -5,5 +5,6 @@
 
 source("binomial_experiment.r")
 
-n_max = 10
-plot_all_pP_below_n(n_max, "binomial_experiment_plots")
+plot_all_pP_below_n(10, "binomial_experiment_plots")
+
+gif_random_sequence(100, 0.35)
