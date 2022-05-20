@@ -55,7 +55,7 @@ gif_random_sequence <- function(n_max, P) {
    for (n in 0:n_max) {
       k = sum(successes[0:n], na.rm = TRUE)
       pPnk = binomial_fit(n, k)
-      plot(binom_p, pPnk, type="l", xlab="P", ylab=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), lwd = 2)
+      plot(binom_p, pPnk, type="l", xlab="P", ylab=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), ylim = c(0,1), lwd = 2)
    },
    movie.name = paste0("Updating_n_", n_max, "_P_", P, ".gif")
    )
