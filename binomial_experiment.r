@@ -7,12 +7,15 @@
 library(animation)
 
 n_steps <- 100
+step_length <- 1. / n_steps
 binom_p <- seq(from=0, to=1, length.out=n_steps)
 
 # Calculate p(P|n, k), given a prior p(P)
 binomial_update <- function(n, k, pP) {
    L <- dbinom(k, size = n, prob = binom_p)
    pPnk <- L * pP
+   # A normalisation should go here
+   norm = sum(pPnk * step_length)
    return(pPnk)
 }
 
@@ -51,12 +54,27 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
 gif_random_sequence <- function(n_max, P) {
    tosses <- runif(n_max)
    successes <- tosses < P
-   saveGIF(
+   
+   successive_pPnk <- array(0, c(n_steps, n_max))
    for (n in 0:n_max) {
       k = sum(successes[0:n], na.rm = TRUE)
       pPnk = binomial_fit(n, k)
-      plot(binom_p, pPnk, type="l", xlab="P", ylab=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), ylim = c(0,1), lwd = 2)
+      successive_pPnk[, n] <-pPnk
+   }
+   
+   saveGIF(
+   for (n in 1:n_max) {
+      plot(1, type="l", xlab="P", ylab=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), ylim = c(0,1), lwd = 2)
+      lines(binom_p, y = successive_pPnk[, n])
+      if (n > 1) {
+         lines(binom_p, y = successive_pPnk[, n-1], lty = 2)
+      }
+      if (n > 2) {
+         lines(binom_p, y = successive_pPnk[, n-2], lty = 3)
+      }
    },
    movie.name = paste0("Updating_n_", n_max, "_P_", P, ".gif")
    )
+   # I have to figure out how to save it in some other folder. Right now this
+   # is specifically the file *name* not a file path
 }
