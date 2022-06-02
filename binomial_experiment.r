@@ -2,7 +2,8 @@
 # successes, and plot the fit. The intent is to give an idea of how the
 # distribution successively narrows as more data is supplied. This is
 # based on a demonstration in Chap. 2 of Statistical Rethinking by 
-# McElreath
+# McElreath, and some things I had to figure out at work for a
+# statistical analysis that involved comparing to binomial processes.
 
 library(animation)
 
