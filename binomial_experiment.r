@@ -84,9 +84,9 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
 
 ## GIFs
 
-# Make a gif containing the binomial fits as they are updated over n
+# Make a gif showing the binomial fits as they are updated over n
 # binomial draws with a probability P of success
-gif_random_sequence <- function(n_max, P, fadeout = TRUE) {
+gif_pP_updating <- function(n_max, P, fadeout = TRUE) {
    tosses <- runif(n_max)
    successes <- tosses < P
    
@@ -94,7 +94,7 @@ gif_random_sequence <- function(n_max, P, fadeout = TRUE) {
    for (n in 0:n_max) {
       k = sum(successes[0:n], na.rm = TRUE)
       pPnk = binomial_fit(n, k)
-      successive_pPnk[, n] <-pPnk
+      successive_pPnk[, n] <- pPnk
    }
    
    saveGIF(
@@ -115,6 +115,47 @@ gif_random_sequence <- function(n_max, P, fadeout = TRUE) {
       lines(binom_p, y = successive_pPnk[, n], col = "gray0")
    },
    movie.name = paste0("Updating_n_", n_max, "_P_", P, ".gif")
+   )
+   # I have to figure out how to save it in some other folder. Right now this
+   # is specifically the file *name* not a file path
+}
+
+# Make a gif showing the estimated difference between the probabilities
+# of two binomial distributions as they are updated over n draws with
+# probabilities P1 and P2 of success
+gif_dD_updating <- function(n_max, P1, P2, fadeout = TRUE) {
+   tosses_1 <- runif(n_max)
+   successes_1 <- tosses_1 < P1
+   tosses_2 <- runif(n_max)
+   successes_2 <- tosses_2 < P2
+   
+   successive_dD <- array(0, c(2*n_steps-1, n_max))
+   for (n in 0:n_max) {
+      k1 = sum(successes_1[0:n], na.rm = TRUE)
+      k2 = sum(successes_2[0:n], na.rm = TRUE)
+      dD = difference(n, k1, n, k2) 
+      successive_dD[, n] <- dD
+   }
+   
+   saveGIF(
+   for (n in 1:n_max) {
+      k1 = sum(successes_1[0:n], na.rm = TRUE)
+      k2 = sum(successes_2[0:n], na.rm = TRUE)
+      plot(1, type="l", xlab="D", ylab = "d(D)", main=paste0("d(D|", n, ", ", k1, ", ", n, ", ", k2, ")"), xlim = c(-1,1), ylim = c(0,max(dD)), lwd = 2)
+      if (fadeout) {
+         if (n > 3) {
+            lines(binom_d, y = successive_dD[, n-3], col = "gray88")
+         }
+         if (n > 2) {
+            lines(binom_d, y = successive_dD[, n-2], col = "gray75")
+         }
+         if (n > 1) {
+            lines(binom_d, y = successive_dD[, n-1], col = "gray50")
+         }
+      }
+      lines(binom_d, y = successive_dD[, n], col = "gray0")
+   },
+   movie.name = paste0("Updating_n_", n_max, "_P1_", P1, "_P2_", P2, ".gif")
    )
    # I have to figure out how to save it in some other folder. Right now this
    # is specifically the file *name* not a file path
