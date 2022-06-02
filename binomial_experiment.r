@@ -37,7 +37,7 @@ binomial_fit <- function (n, k) {
 # and P2. Define the difference D = P1 - P2. Then the probability
 # distribution d(D|n1, k1, n2, k2) is given by the convolution between
 # the probability distributions p(P1|n1,k1) and p(P2|n2,k2)
-difference <- function (n1, k1, n2, k2) {
+compare <- function (n1, k1, n2, k2) {
    pP1 <- binomial_fit(n1, k1)
    pP2 <- binomial_fit(n2, k2)
    dD <- convolve(pP1,pP2, type = 'open')
@@ -134,7 +134,7 @@ gif_dD_updating <- function(n_max, P1, P2, fadeout = TRUE) {
    for (n in 0:n_max) {
       k1 = sum(successes_1[0:n], na.rm = TRUE)
       k2 = sum(successes_2[0:n], na.rm = TRUE)
-      dD = difference(n, k1, n, k2) 
+      dD = compare(n, k1, n, k2) 
       successive_dD[, n] <- dD
    }
    
