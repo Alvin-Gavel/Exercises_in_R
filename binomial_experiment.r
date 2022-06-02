@@ -12,7 +12,7 @@ library(animation)
 n_steps <- 100
 step_length <- 1. / n_steps
 binom_p <- seq(from=0, to=1, length.out=n_steps)
-
+binom_d <-seq(from=-1, to=1, length.out=2*n_steps-1)
 
 ## Statistical calculations
 
@@ -20,8 +20,8 @@ binom_p <- seq(from=0, to=1, length.out=n_steps)
 binomial_update <- function(n, k, pP) {
    L <- dbinom(k, size = n, prob = binom_p)
    pPnk <- L * pP
-   norm = sum(pPnk * step_length)
-   pPnk = pPnk / norm
+   norm <- sum(pPnk * step_length)
+   pPnk <- pPnk / norm
    return(pPnk)
 }
 
@@ -32,6 +32,18 @@ binomial_fit <- function (n, k) {
    return(pPnk)
 }
 
+# Assume you have two binomial processes with success probabilities P1
+# and P2. Define the difference D = P1 - P2. Then the probability
+# distribution d(D|n1, k1, n2, k2) is given by the convolution between
+# the probability distributions p(P1|n1,k1) and p(P2|n2,k2)
+difference <- function (n1, k1, n2, k2) {
+   pP1 <- binomial_fit(n1, k1)
+   pP2 <- binomial_fit(n2, k2)
+   dD <- convolve(pP1,rev(pP2), type = 'open')
+   norm <- sum(dD * step_length)
+   dD <- dD / norm
+   return(dD)
+}
 
 ## Plotting
 
@@ -47,6 +59,18 @@ plot_pP <- function(pPnk, file_path, frame = TRUE) {
    dev.off()
 }
 
+# Plot d(D| n1, k1, n2, k2) and save the resulting figure
+plot_dD <- function(dD, file_path, frame = TRUE) {
+   png(file=file_path)
+   if (frame) {
+      plot(binom_d, dD, type="l", xlab="P", ylab="d(D|n1, k1, n1, k2)", xlim = c(-1,1), lwd = 2)
+   } else {
+      par(mar=c(0,0,0,0))
+      plot(binom_d, dD, type="l", axes=FALSE, xlab="", ylab="", bty="n", xlim = c(-1,1), lwd = 2)
+   }
+   dev.off()
+}
+
 # Plot fits of p(P|n, k) with a flat prior, saving them in a given folder
 plot_all_pP_below_n <- function(n_max, folder_path) {
    for (n in 0:n_max) {
@@ -57,6 +81,8 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
       }
    }
 }
+
+## GIFs
 
 # Make a gif containing the binomial fits as they are updated over n
 # binomial draws with a probability P of success
