@@ -40,7 +40,7 @@ binomial_fit <- function (n, k) {
 difference <- function (n1, k1, n2, k2) {
    pP1 <- binomial_fit(n1, k1)
    pP2 <- binomial_fit(n2, k2)
-   dD <- convolve(pP1,rev(pP2), type = 'open')
+   dD <- convolve(pP1,pP2, type = 'open')
    norm <- sum(dD * step_length)
    dD <- dD / norm
    return(dD)
