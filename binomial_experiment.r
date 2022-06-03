@@ -76,7 +76,7 @@ plot_dD <- function(dD, file_path, frame = TRUE) {
 plot_all_pP_below_n <- function(n_max, folder_path) {
    for (n in 0:n_max) {
       for (k in 0:n) {
-         pPnk = binomial_fit(n, k)
+         pPnk <- binomial_fit(n, k)
          plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k, "_no_frame", ".png"), FALSE)
          plot_pP(pPnk, paste0(folder_path, "/Binomial_fit_", n, "_", k, ".png"), TRUE)
       }
@@ -93,18 +93,18 @@ gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
    
    successive_pPnk <- array(0, c(n_steps, n_max))
    for (n in 0:n_max) {
-      k = sum(successes[0:n], na.rm = TRUE)
+      k <- sum(successes[0:n], na.rm = TRUE)
       pPnk <- binomial_fit(n, k)
       successive_pPnk[, n] <- pPnk
    }
    
-   initial_dir = getwd()
-   absolute_folder_path = paste0(initial_dir, '/', folder_path)
+   initial_dir <- getwd()
+   absolute_folder_path <- paste0(initial_dir, '/', folder_path)
    setwd(absolute_folder_path)
    
    saveGIF(
    for (n in 1:n_max) {
-      k = sum(successes[0:n], na.rm = TRUE)
+      k <- sum(successes[0:n], na.rm = TRUE)
       plot(1, type="l", xlab="P", ylab = "p(P)", main=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), ylim = c(0,max(pPnk)), lwd = 2)
       if (fadeout) {
          if (n > 3) {
@@ -141,8 +141,8 @@ gif_dD_updating <- function(n_max, P1, P2, folder_path, fadeout = TRUE) {
       successive_dD[, n] <- dD
    }
    
-   initial_dir = getwd()
-   absolute_folder_path = paste0(initial_dir, '/', folder_path)
+   initial_dir <- getwd()
+   absolute_folder_path <- paste0(initial_dir, '/', folder_path)
    setwd(absolute_folder_path)
    
    saveGIF(
