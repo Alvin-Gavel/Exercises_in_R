@@ -87,7 +87,7 @@ plot_all_pP_below_n <- function(n_max, folder_path) {
 
 # Make a gif showing the binomial fits as they are updated over n
 # binomial draws with a probability P of success
-gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
+gif_pP_updating <- function(n_max, P, folder_path, remain_images = 0) {
    tosses <- runif(n_max)
    successes <- tosses < P
    
@@ -101,23 +101,20 @@ gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
    initial_dir <- getwd()
    absolute_folder_path <- paste0(initial_dir, '/', folder_path)
    setwd(absolute_folder_path)
-   
+  
    saveGIF(
    for (n in 1:n_max) {
       k <- sum(successes[0:n], na.rm = TRUE)
       plot(1, type="l", xlab="P", ylab = "p(P)", main=paste0("p(P|", n, ", ", k, ")"), xlim = c(0,1), ylim = c(0,max(pPnk)), lwd = 2)
-      if (fadeout) {
-         if (n > 3) {
-            lines(binom_p, y = successive_pPnk[, n-3], col = "gray88")
-         }
-         if (n > 2) {
-            lines(binom_p, y = successive_pPnk[, n-2], col = "gray75")
-         }
-         if (n > 1) {
-            lines(binom_p, y = successive_pPnk[, n-1], col = "gray50")
+      for (i in 0:remain_images) {
+         if (n-i > 0) {
+            start_brightness <- 0.0
+            final_brightness <- 1.0
+            step_length <- (final_brightness - start_brightness) / (remain_images + 1.0)
+            brightness <- start_brightness + step_length * i
+            lines(binom_p, y = successive_pPnk[, n-i], col = rgb(brightness, brightness, brightness))
          }
       }
-      lines(binom_p, y = successive_pPnk[, n], col = "gray0")
    },
    movie.name <- paste0("Updating_n_", n_max, "_P_", P, ".gif")
    )
@@ -127,7 +124,7 @@ gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
 # Make a gif showing the estimated difference between the probabilities
 # of two binomial distributions as they are updated over n draws with
 # probabilities P1 and P2 of success
-gif_dD_updating <- function(n_max, P1, P2, folder_path, fadeout = TRUE) {
+gif_dD_updating <- function(n_max, P1, P2, folder_path, remain_images = 0) {
    tosses_1 <- runif(n_max)
    successes_1 <- tosses_1 < P1
    tosses_2 <- runif(n_max)
@@ -150,18 +147,15 @@ gif_dD_updating <- function(n_max, P1, P2, folder_path, fadeout = TRUE) {
       k1 <- sum(successes_1[0:n], na.rm = TRUE)
       k2 <- sum(successes_2[0:n], na.rm = TRUE)
       plot(1, type="l", xlab="D", ylab = "d(D)", main=paste0("d(D|", n, ", ", k1, ", ", n, ", ", k2, ")"), xlim = c(-1,1), ylim = c(0,max(dD)), lwd = 2)
-      if (fadeout) {
-         if (n > 3) {
-            lines(binom_d, y = successive_dD[, n-3], col = "gray88")
-         }
-         if (n > 2) {
-            lines(binom_d, y = successive_dD[, n-2], col = "gray75")
-         }
-         if (n > 1) {
-            lines(binom_d, y = successive_dD[, n-1], col = "gray50")
+      for (i in 0:remain_images) {
+         if (n-i > 0) {
+            start_brightness <- 0.0
+            final_brightness <- 1.0
+            step_length <- (final_brightness - start_brightness) / (remain_images + 1.0)
+            brightness <- start_brightness + step_length * i
+            lines(binom_d, y = successive_dD[, n-i], col = rgb(brightness, brightness, brightness))
          }
       }
-      lines(binom_d, y = successive_dD[, n], col = "gray0")
    },
    movie.name <- paste0("Updating_n_", n_max, "_P1_", P1, "_P2_", P2, ".gif")
    )
