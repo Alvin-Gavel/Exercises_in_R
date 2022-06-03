@@ -7,6 +7,6 @@ source("binomial_experiment.r")
 
 plot_all_pP_below_n(10, "binomial_experiment_plots")
 
-gif_pP_updating(100, 0.35)
+gif_pP_updating(100, 0.35, "binomial_experiment_plots")
 
-gif_dD_updating(100, 0.48, 0.52)
+gif_dD_updating(100, 0.48, 0.52, "binomial_experiment_plots")

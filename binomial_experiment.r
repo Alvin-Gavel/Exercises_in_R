@@ -98,6 +98,9 @@ gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
       successive_pPnk[, n] <- pPnk
    }
    
+   initial_dir = getwd()
+   absolute_folder_path = paste0(initial_dir, '/', folder_path)
+   setwd(absolute_folder_path)
    
    saveGIF(
    for (n in 1:n_max) {
@@ -118,13 +121,13 @@ gif_pP_updating <- function(n_max, P, folder_path, fadeout = TRUE) {
    },
    movie.name <- paste0("Updating_n_", n_max, "_P_", P, ".gif")
    )
-
+   setwd(initial_dir)
 }
 
 # Make a gif showing the estimated difference between the probabilities
 # of two binomial distributions as they are updated over n draws with
 # probabilities P1 and P2 of success
-gif_dD_updating <- function(n_max, P1, P2, fadeout = TRUE) {
+gif_dD_updating <- function(n_max, P1, P2, folder_path, fadeout = TRUE) {
    tosses_1 <- runif(n_max)
    successes_1 <- tosses_1 < P1
    tosses_2 <- runif(n_max)
@@ -137,6 +140,10 @@ gif_dD_updating <- function(n_max, P1, P2, fadeout = TRUE) {
       dD <- compare(n, k1, n, k2) 
       successive_dD[, n] <- dD
    }
+   
+   initial_dir = getwd()
+   absolute_folder_path = paste0(initial_dir, '/', folder_path)
+   setwd(absolute_folder_path)
    
    saveGIF(
    for (n in 1:n_max) {
@@ -158,6 +165,5 @@ gif_dD_updating <- function(n_max, P1, P2, fadeout = TRUE) {
    },
    movie.name <- paste0("Updating_n_", n_max, "_P1_", P1, "_P2_", P2, ".gif")
    )
-   # I have to figure out how to save it in some other folder. Right now this
-   # is specifically the file *name* not a file path
+   setwd(initial_dir)
 }
