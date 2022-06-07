@@ -111,7 +111,11 @@ gif_pP_updating <- function(n_max, P, folder_path, remain_images = 0) {
             start_brightness <- 0.0
             final_brightness <- 1.0
             step_length <- (final_brightness - start_brightness) / (remain_images + 1.0)
-            brightness <- start_brightness + step_length * i
+            if (i == 0) {
+               brightness <- 0.0
+            } else {
+               brightness <- start_brightness + step_length * i
+            }
             lines(binom_p, y = successive_pPnk[, n-i], col = rgb(brightness, brightness, brightness))
          }
       }
@@ -149,10 +153,14 @@ gif_dD_updating <- function(n_max, P1, P2, folder_path, remain_images = 0) {
       plot(1, type="l", xlab="D", ylab = "d(D)", main=paste0("d(D|", n, ", ", k1, ", ", n, ", ", k2, ")"), xlim = c(-1,1), ylim = c(0,max(dD)), lwd = 2)
       for (i in 0:remain_images) {
          if (n-i > 0) {
-            start_brightness <- 0.0
+            start_brightness <- 0.5
             final_brightness <- 1.0
             step_length <- (final_brightness - start_brightness) / (remain_images + 1.0)
-            brightness <- start_brightness + step_length * i
+            if (i == 0) {
+               brightness <- 0.0
+            } else {
+               brightness <- start_brightness + step_length * i
+            }
             lines(binom_d, y = successive_dD[, n-i], col = rgb(brightness, brightness, brightness))
          }
       }
