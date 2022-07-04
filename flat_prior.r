@@ -27,13 +27,25 @@
 
 library(animation)
 
+# Magic numbers
+
+parameter_steps = 100
+
 # The data generation matches the model used by Alice, but this has no
 # importance
 generate_data <- function(n, alpha, sigma) {
    d <- runif(n, 0, 1)
-   x <- d * cos(alpha)
-   y <- d * sin(alpha)
-   x_noisy <- x + rnorm(n, 0, sigma)
-   y_noisy <- y + rnorm(n, 0, sigma)
-   return(rbind(x_noisy, y_noisy))
+   x_noiseless <- d * cos(alpha)
+   y_noiseless <- d * sin(alpha)
+   x <- x_noiseless + rnorm(n, 0, sigma)
+   y <- y_noiseless + rnorm(n, 0, sigma)
+   return(rbind(x, y))
+}
+
+
+
+plot_data <- function(data, file_path) {
+   png(file=file_path)
+   plot(data[1,], data[2,], xlab="x", ylab="y", xlim = c(-1,1), ylim = c(-1,1))
+   dev.off()
 }
