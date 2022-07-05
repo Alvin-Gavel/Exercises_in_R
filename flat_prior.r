@@ -42,7 +42,15 @@ generate_data <- function(n, alpha, sigma) {
    return(rbind(x, y))
 }
 
+P_x_y_from_xtrue_ytrue_sigma <- function(x, y, xtrue, ytrue, sigma) {
+   (1. / (sigma * sqrt(2 * pi))) * exp()
+}
 
+alice_fit_bayesian <- function(data) {
+   alphas = linspace(0, 2 * pi, n = parameter_steps)
+   alpha_prior = ones(parameter_steps)
+   likelihood = 
+}
 
 plot_data <- function(data, file_path) {
    png(file=file_path)
